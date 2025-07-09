@@ -82,9 +82,40 @@
     <button onclick="location.href='../index.html'">🏠 Main Menu</button>
   </div>
   <script>
-    const questions = [{'question': 'I have 6 🥝 kiwis and 7 🍓 strawberries. How many fruits are there in total?', 'options': [13, 12, 8], 'answer': 13}, {'question': 'I have 2 🍇 grapes and 9 🍑 peaches. How many fruits are there in total?', 'options': [10, 7, 11], 'answer': 11}, {'question': 'I have 6 🍓 strawberries and 5 🍇 grapes. How many fruits are there in total?', 'options': [0, 4, 11], 'answer': 11}, {'question': 'I have 9 🍍 pineapples and 1 🍒 cherries. How many fruits are there in total?', 'options': [5, 10, 18], 'answer': 10}, {'question': 'I have 5 🥝 kiwis and 1 🍒 cherries. How many fruits are there in total?', 'options': [12, 6, 2], 'answer': 6}, {'question': 'I have 2 🥝 kiwis and 7 🍌 bananas. How many fruits are there in total?', 'options': [10, 13, 9], 'answer': 9}, {'question': 'I have 1 🍍 pineapples and 3 🍎 apples. How many fruits are there in total?', 'options': [13, 4, 11], 'answer': 4}, {'question': 'I have 5 🍍 pineapples and 3 🍎 apples. How many fruits are there in total?', 'options': [18, 5, 8], 'answer': 8}, {'question': 'I have 9 🍍 pineapples and 3 🍇 grapes. How many fruits are there in total?', 'options': [2, 8, 12], 'answer': 12}, {'question': 'I have 5 🥝 kiwis and 6 🍌 bananas. How many fruits are there in total?', 'options': [7, 10, 11], 'answer': 11}];
+    const objects = [["🍌", "bananas"], ["🍎", "apples"], ["🍓", "strawberries"], ["🥝", "kiwis"], ["🍍", "pineapples"], ["🍇", "grapes"], ["🍒", "cherries"], ["🍑", "peaches"]];
+    const mode = "addition";
+    let questions = [];
     let current = 0;
     let score = 0;
+
+    function generateQuestions() {
+      for (let i = 0; i < 10; i++) {
+        let a = Math.floor(Math.random() * 9) + 1;
+        let b = Math.floor(Math.random() * 9) + 1;
+        let question = "";
+        let answer = 0;
+
+        if (mode === "addition") {
+          let obj1 = objects[Math.floor(Math.random() * objects.length)];
+          let obj2 = objects[Math.floor(Math.random() * objects.length)];
+          question = `I have ${a} ${obj1[0]} ${obj1[1]} and ${b} ${obj2[0]} ${obj2[1]}. How many fruits are there in total?`;
+          answer = a + b;
+        } else {
+          if (a < b) [a, b] = [b, a];
+          let obj = objects[Math.floor(Math.random() * objects.length)];
+          question = `I had ${a} ${obj[0]} ${obj[1]}. ${b} flew away. How many are left?`;
+          answer = a - b;
+        }
+
+        let options = [answer];
+        while (options.length < 3) {
+          let fake = Math.floor(Math.random() * 19);
+          if (!options.includes(fake)) options.push(fake);
+        }
+        options.sort(() => Math.random() - 0.5);
+        questions.push({ question, options, answer });
+      }
+    }
 
     function showQuestion() {
       const q = questions[current];
@@ -127,6 +158,7 @@
       location.reload();
     }
 
+    generateQuestions();
     showQuestion();
   </script>
 </body>

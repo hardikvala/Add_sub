@@ -82,9 +82,40 @@
     <button onclick="location.href='../index.html'">🏠 Main Menu</button>
   </div>
   <script>
-    const questions = [{'question': 'I had 7 🐦 birds. 3 flew away. How many are left?', 'options': [0, 6, 4], 'answer': 4}, {'question': 'I had 5 🐦 birds. 4 flew away. How many are left?', 'options': [7, 3, 1], 'answer': 1}, {'question': 'I had 4 🦆 ducks. 3 flew away. How many are left?', 'options': [1, 17, 10], 'answer': 1}, {'question': 'I had 7 🐢 turtles. 3 flew away. How many are left?', 'options': [4, 14, 5], 'answer': 4}, {'question': 'I had 7 🐸 frogs. 7 flew away. How many are left?', 'options': [10, 0, 18], 'answer': 0}, {'question': 'I had 8 🐝 bees. 1 flew away. How many are left?', 'options': [1, 7, 11], 'answer': 7}, {'question': 'I had 5 🐝 bees. 5 flew away. How many are left?', 'options': [1, 9, 0], 'answer': 0}, {'question': 'I had 3 🐰 rabbits. 2 flew away. How many are left?', 'options': [1, 2, 12], 'answer': 1}, {'question': 'I had 8 🐢 turtles. 4 flew away. How many are left?', 'options': [15, 12, 4], 'answer': 4}, {'question': 'I had 1 🐢 turtles. 1 flew away. How many are left?', 'options': [0, 11, 14], 'answer': 0}];
+    const objects = [["🐦", "birds"], ["🐠", "fish"], ["🦋", "butterflies"], ["🐸", "frogs"], ["🐰", "rabbits"], ["🦆", "ducks"], ["🐢", "turtles"], ["🐝", "bees"]];
+    const mode = "subtraction";
+    let questions = [];
     let current = 0;
     let score = 0;
+
+    function generateQuestions() {
+      for (let i = 0; i < 10; i++) {
+        let a = Math.floor(Math.random() * 9) + 1;
+        let b = Math.floor(Math.random() * 9) + 1;
+        let question = "";
+        let answer = 0;
+
+        if (mode === "addition") {
+          let obj1 = objects[Math.floor(Math.random() * objects.length)];
+          let obj2 = objects[Math.floor(Math.random() * objects.length)];
+          question = `I have ${a} ${obj1[0]} ${obj1[1]} and ${b} ${obj2[0]} ${obj2[1]}. How many fruits are there in total?`;
+          answer = a + b;
+        } else {
+          if (a < b) [a, b] = [b, a];
+          let obj = objects[Math.floor(Math.random() * objects.length)];
+          question = `I had ${a} ${obj[0]} ${obj[1]}. ${b} flew away. How many are left?`;
+          answer = a - b;
+        }
+
+        let options = [answer];
+        while (options.length < 3) {
+          let fake = Math.floor(Math.random() * 19);
+          if (!options.includes(fake)) options.push(fake);
+        }
+        options.sort(() => Math.random() - 0.5);
+        questions.push({ question, options, answer });
+      }
+    }
 
     function showQuestion() {
       const q = questions[current];
@@ -127,6 +158,7 @@
       location.reload();
     }
 
+    generateQuestions();
     showQuestion();
   </script>
 </body>
