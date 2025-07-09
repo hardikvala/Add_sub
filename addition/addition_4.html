@@ -9,16 +9,41 @@
     .option { margin: 20px; padding: 20px; background: #ffe4b5; display: inline-block; border-radius: 10px; cursor: pointer; }
     .top-buttons { position: absolute; top: 10px; width: 100%; display: flex; justify-content: space-between; padding: 0 20px; }
     button { font-size: 18px; padding: 10px 20px; border-radius: 8px; }
+    #feedback { font-size: 24px; margin-top: 30px; }
   </style>
 </head>
 <body>
   <div class="top-buttons">
     <button onclick="location.href='../../index.html'">🏠 Main Menu</button>
-    <button onclick="location.href='addition_5.html'">Next Level ➡️</button>
+    <button onclick="nextLevel()">Next Level ➡️</button>
   </div>
-  <div class="question">[Example Visual Question Here for Level 4]</div>
-  <div class="option">Option 1</div>
-  <div class="option">Option 2</div>
-  <div class="option">Option 3</div>
+  <div class="question">I have 2 bananas and 2 apples. How many fruits are there in total?</div>
+  <div class="option" onclick="checkAnswer(4)">4</div><div class="option" onclick="checkAnswer(7)">7</div><div class="option" onclick="checkAnswer(11)">11</div>
+  <div id="feedback"></div>
+  <script>
+    let score = localStorage.getItem('addition_score') || 0;
+    let answered = false;
+
+    function checkAnswer(ans) {
+      if (answered) return;
+      answered = true;
+      let correct = 4;
+      let feedback = document.getElementById("feedback");
+      if (ans === correct) {
+        score++;
+        localStorage.setItem('addition_score', score);
+        feedback.textContent = "🎉 Correct!";
+        feedback.style.color = "green";
+      } else {
+        feedback.textContent = "❌ Oops! Try again next time.";
+        feedback.style.color = "red";
+      }
+    }
+
+    function nextLevel() {
+      const next = 5;
+      window.location.href = "addition_" + next + ".html";
+    }
+  </script>
 </body>
 </html>
